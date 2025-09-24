@@ -1,0 +1,81 @@
+
+# Firebase Email Export Script - Setup & Usage Instructions
+
+## Prerequisites
+1. Node.js installed on your system
+2. Firebase project with Firestore database
+3. Firebase Admin SDK service account key
+
+## Setup Instructions
+
+### Step 1: Install Firebase Admin SDK
+```bash
+npm install firebase-admin
+```
+
+Note: The script has been updated to work with ES modules since your project uses `"type": "module"` in package.json.
+
+### Step 2: Get Firebase Service Account Key
+1. Go to Firebase Console (https://console.firebase.google.com)
+2. Select your project
+3. Go to Project Settings (gear icon)
+4. Click on "Service accounts" tab
+5. Click "Generate new private key"
+6. Download the JSON file and rename it to "serviceAccount.json"
+7. Place "serviceAccount.json" in the same directory as exportEmails.js
+
+### Step 3: Verify Firestore Structure
+Make sure your Firestore has a "users" collection with documents containing an "email" field:
+```
+users/
+  ├── user1/
+  │   ├── email: "user1@example.com"
+  │   └── ...
+  ├── user2/
+  │   ├── email: "user2@example.com"
+  │   └── ...
+```
+
+## Running the Script
+
+### Local Development (Replit)
+```bash
+node exportEmails.js
+```
+
+### Production Server
+```bash
+node exportEmails.js
+```
+
+## Output Files
+The script creates two files:
+- emails.csv - CSV format with header
+- emails.txt - Plain text, one email per line
+
+## Troubleshooting
+
+### Common Errors:
+1. "serviceAccount.json not found" - Download the service account key
+2. "Permission denied" - Check Firebase security rules
+3. "Collection not found" - Verify collection name is "users"
+
+### Security Notes:
+- Keep serviceAccount.json secure and never commit to version control
+- Add serviceAccount.json to .gitignore
+- The service account has admin privileges, use carefully
+
+## Firebase Security Rules (for reference)
+Make sure your Firestore rules allow the service account to read:
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
+```
+
+Note: Service account bypasses security rules, so this is just for client access.

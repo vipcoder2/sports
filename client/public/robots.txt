@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Block streaming pages from indexing
+Disallow: /stream/
+Disallow: /match/*/streams
+Disallow: /match/
+
+# Block user-specific pages
+Disallow: /login
+Disallow: /register
+Disallow: /dashboard
+Disallow: /favorites
+Disallow: /profile
+
+# Block API endpoints
+Disallow: /api/
+
+Sitemap: https://sportsbite.cc/sitemap.xml
